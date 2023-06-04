@@ -44,11 +44,20 @@
 	mv \reg,fp
 	addi fp,fp,4
 	.endm
+/*
+	In FORTH the interpreter function is often called DOCOL (I think it means "DO COLON" because
+	all FORTH definitions start with a colon, as in : DOUBLE DUP + ;
 
+	The "interpreter" (it's not really "interpreting") just needs to push the old tp/%esi on the
+	stack and set tp/%esi to the first word in the definition.  Remember that we jumped to the
+	function using jalr zero,gp,0 / JMP *(%eax)?  Well a consequence of that is that conveniently gp/%eax contains
+	the address of this codeword, so just by adding 4 to it we get the address of the first
+	data word.  Finally after setting up tp/%esi, it just does NEXT which causes that first word
+	to run.
+*/
 /* DOCOL - the interpreter */
 	.text
 	.align 4
-
 DOCOL:
 	PUSHRSP tp
 	add tp,gp,4
