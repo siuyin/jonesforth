@@ -173,9 +173,12 @@ name_\label :
 	.section .rodata
 	.align 4
 	.globl name_\label
-name_\label :
-	.int link		// link
-	.set link,name_\label
+#name_\label :
+#	.int link
+#	.set link,name_\label
+1:
+	.int link
+	.set link\@, 1b 
 	.byte \flags+\namelen	// flags + length byte
 	.ascii "\name"		// the name
 	.align 4		// padding to next 4 byte boundary
@@ -183,7 +186,25 @@ name_\label :
 \label :
 	.int code_\label	// codeword
 	.text
-	//.align 4
 	.globl code_\label
 code_\label :			// assembler code follows
 	.endm
+
+/*
+	Now some easy FORTH primitives.  These are written in assembly for speed.  If you understand
+	risc-v assembly language then it is worth reading these.  However if you don't understand assembly
+	you can skip the details.
+*/
+
+	# DROP drops the top of stack
+	defcode "DROP",4,,DROP
+	mv gp,sp
+	addi sp,sp,-4
+	NEXT
+
+	defcode "SWAP",4,,SWAP
+	lw t0,-4(sp)
+	lw t1,0(sp)
+	sw t0,0(sp)
+	sw t1,-4(sp)
+	NEXT

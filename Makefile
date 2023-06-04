@@ -1,6 +1,10 @@
 PREFIX?=riscv64-unknown-elf
 MINICHLINK?=/home/siuyin/ch32v003fun/minichlink
 
+
+
+#-Wa,-a=junk.lst \
+
 CFLAGS+= \
 	-g -Os -flto -ffunction-sections \
 	-static-libgcc \
