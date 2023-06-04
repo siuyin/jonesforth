@@ -78,6 +78,50 @@ cold_start:
 	# FIXME
 	#.int QUIT
 
+/*
+	BUILT-IN WORDS ----------------------------------------------------------------------
+
+	Remember our dictionary entries (headers)?  Let's bring those together with the codeword
+	and data words to see how : DOUBLE DUP + ; really looks in memory.
+
+	  pointer to previous word
+	   ^
+	   |
+	+--|------+---+---+---+---+---+---+---+---+------------+------------+------------+------------+
+	| LINK    | 6 | D | O | U | B | L | E | 0 | DOCOL      | DUP        | +          | EXIT       |
+	+---------+---+---+---+---+---+---+---+---+------------+--|---------+------------+------------+
+           ^       len                         pad  codeword      |
+	   |							  V
+	  LINK in next word				points to codeword of DUP
+	
+	Initially we can't just write ": DOUBLE DUP + ;" (ie. that literal string) here because we
+	don't yet have anything to read the string, break it up at spaces, parse each word, etc. etc.
+	So instead we will have to define built-in words using the GNU assembler data constructors
+	(like .int, .byte, .string, .ascii and so on -- look them up in the gas info page if you are
+	unsure of them).
+
+	The long way would be:
+
+	.int <link to previous word>
+	.byte 6			// len
+	.ascii "DOUBLE"		// string
+	.byte 0			// padding
+DOUBLE: .int DOCOL		// codeword
+	.int DUP		// pointer to codeword of DUP
+	.int PLUS		// pointer to codeword of +
+	.int EXIT		// pointer to codeword of EXIT
+
+	That's going to get quite tedious rather quickly, so here I define an assembler macro
+	so that I can just write:
+
+	defword "DOUBLE",6,,DOUBLE
+	.int DUP,PLUS,EXIT
+
+	and I'll get exactly the same effect.
+
+	Don't worry too much about the exact implementation details of this macro - it's complicated!
+*/
+
 	.set F_IMMED,0x80
 	.set F_HIDDEN,0x20
 	.set F_LENMASK,0x1f

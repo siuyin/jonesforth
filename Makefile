@@ -32,11 +32,11 @@ $(TARGET).bin : $(TARGET).elf
 
 FLASH_COMMAND?=$(MINICHLINK)/minichlink -w $< $(WRITE_SECTION) -b
 
-cv_flash : $(TARGET).bin
+flash : $(TARGET).bin
 	make -C $(MINICHLINK) all
 	$(FLASH_COMMAND)
 
-cv_clean :
+clean :
 	rm -rf $(TARGET).elf $(TARGET).bin $(TARGET).hex $(TARGET).lst $(TARGET).map $(TARGET).hex || true
 
 build : $(TARGET).bin
