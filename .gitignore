@@ -1,0 +1,8 @@
+*.swp
+*secret*
+*.hex
+*.bin
+*.elf
+*.map
+*.lst
+*.o
