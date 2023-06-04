@@ -19,6 +19,21 @@
 	jalr zero,gp,0
 	.endm
 
+/*
+	As you will have seen in the background documentation, FORTH has two stacks, an ordinary
+	stack for parameters, and a return stack which is a bit more mysterious.  But our return
+	stack is just the stack I talked about in the previous paragraph, used to save tp/%esi when
+	calling from a FORTH word into another FORTH word.
+
+	In this FORTH, we are using the normal stack pointer (sp/%esp) for the parameter stack.
+	We will use the risc-v/i386's "other" stack pointer (fp/%ebp, usually called the "frame pointer")
+	for our return stack.
+
+	I've got two macros which just wrap up the details of using fp/%ebp for the return stack.
+	You use them as for example "PUSHRSP gp"/"PUSHRSP %eax" (push gp/%eax on the return stack) or "POPRSP t1"/"POPRSP %ebx"
+	(pop top of return stack into t1/%ebx).
+*/
+
 /* Macros to deal with the return stack pointed to by fp. */
 	.macro PUSHRSP reg
 	sw \reg,-4(fp)
