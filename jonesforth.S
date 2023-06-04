@@ -146,3 +146,44 @@ name_\label :
 	// list of word pointers follow
 	.endm
 
+/*
+	Similarly I want a way to write words written in assembly language.  There will be quite a few
+	of these to start with because, well, everything has to start in assembly before there's
+	enough "infrastructure" to be able to start writing FORTH words, but also I want to define
+	some common FORTH words in assembly language for speed, even though I could write them in FORTH.
+
+	This is what DUP looks like in memory:
+
+	  pointer to previous word
+	   ^
+	   |
+	+--|------+---+---+---+---+------------+
+	| LINK    | 3 | D | U | P | code_DUP ---------------------> points to the assembly
+	+---------+---+---+---+---+------------+		    code used to write DUP,
+           ^       len              codeword			    which ends with NEXT.
+	   |
+	  LINK in next word
+
+	Again, for brevity in writing the header I'm going to write an assembler macro called defcode.
+	As with defword above, don't worry about the complicated details of the macro.
+*/
+
+/* defcode macro */
+	.macro defcode name, namelen, flags=0, label
+	.section .rodata
+	.align 4
+	.globl name_\label
+name_\label :
+	.int link		// link
+	.set link,name_\label
+	.byte \flags+\namelen	// flags + length byte
+	.ascii "\name"		// the name
+	.align 4		// padding to next 4 byte boundary
+	.globl \label
+\label :
+	.int code_\label	// codeword
+	.text
+	//.align 4
+	.globl code_\label
+code_\label :			// assembler code follows
+	.endm
