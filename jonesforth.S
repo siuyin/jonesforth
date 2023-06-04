@@ -135,9 +135,12 @@ DOUBLE: .int DOCOL		// codeword
 	.section .rodata
 	.align 4
 	.globl name_\label
+#name_\label :
+#	.int link		// link
+#	.set link,name_\label
 name_\label :
-	.int link		// link
-	.set link,name_\label
+	.int 1b
+1:
 	.byte \flags+\namelen	// flags + length byte
 	.ascii "\name"		// the name
 	.align 4		// padding to next 4 byte boundary
@@ -177,6 +180,7 @@ name_\label :
 #name_\label :
 #	.int link
 #	.set link,name_\label
+name_\label :
 	.int 1b
 1:
 	.byte \flags+\namelen	// flags + length byte
