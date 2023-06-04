@@ -1,9 +1,17 @@
-/* Register usage:
-   tp points to the next instruction.
-   gp points to the current instruction -- Instruction Pointer.
-   fp is the Return Stack pointer.
+/* jonesforth.S adapted to target RISC-V ch32v003 by Loh Siu Yin.
+   Register usage:
+   tp (%esi in jonesforth) points to the next instruction.
+   gp (%eax) points to the current instruction -- Instruction Pointer.
+   fp (%ebp) is the Return Stack pointer.
 */
 
+/* riscv64-unknown-elf-gcc -march=rv32ec -mabi=ilp32e -static -nostdlib -g -T simple.ld -o jonesforth.elf jonesforth.S */
+	.set JONES_VERSION,47
+
+/* Firstly it reads the memory at tp/%esi into the accumulator gp/%eax.
+   Secondly it increments tp/%esi by 4 bytes.
+   Now we just need to jump to the address in gp/%eax.
+ */
 /* NEXT macro */
 	.macro NEXT
 	mv gp,tp
@@ -31,12 +39,25 @@ DOCOL:
 	add tp,gp,4
 	NEXT
 
+
+/* Assembler entry point. */
 	.text
 	.globl _start
 _start:
-	la fp, return_stack_top
+	la fp,return_stack_top
+	# FIXME
+	# j set_up_data_segment
+	la tp,cold_start
 
 	.section .rodata
 cold_start:
-	.int QUIT
+	# FIXME
+	#.int QUIT
+
+	.set F_IMMED,0x80
+	.set F_HIDDEN,0x20
+	.set F_LENMASK,0x1f
+
+	.set link,0
+
 
