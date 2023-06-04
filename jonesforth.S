@@ -127,6 +127,7 @@ DOUBLE: .int DOCOL		// codeword
 	.set F_LENMASK,0x1f
 
 	# Store the chain of links.
+1:
 	.set link,0
 
 /* defword macro */
@@ -176,9 +177,8 @@ name_\label :
 #name_\label :
 #	.int link
 #	.set link,name_\label
+	.int 1b
 1:
-	.int link
-	.set link\@, 1b 
 	.byte \flags+\namelen	// flags + length byte
 	.ascii "\name"		// the name
 	.align 4		// padding to next 4 byte boundary
