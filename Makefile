@@ -18,7 +18,7 @@ TARGET_EXT?=S
 WRITE_SECTION?=flash
 
 all:
-	make cv_flash
+	make flash
 
 $(TARGET).elf : $(TARGET).$(TARGET_EXT)
 	$(PREFIX)-gcc -o $@ $^ $(CFLAGS) $(LDFLAGS)
