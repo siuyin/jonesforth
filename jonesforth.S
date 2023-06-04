@@ -126,6 +126,23 @@ DOUBLE: .int DOCOL		// codeword
 	.set F_HIDDEN,0x20
 	.set F_LENMASK,0x1f
 
+	# Store the chain of links.
 	.set link,0
 
+/* defword macro */
+	.macro defword name, namelen, flags=0, label
+	.section .rodata
+	.align 4
+	.globl name_\label
+name_\label :
+	.int link		// link
+	.set link,name_\label
+	.byte \flags+\namelen	// flags + length byte
+	.ascii "\name"		// the name
+	.align 4		// padding to next 4 byte boundary
+	.globl \label
+\label :
+	.int DOCOL		// codeword - the interpreter
+	// list of word pointers follow
+	.endm
 
