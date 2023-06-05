@@ -200,15 +200,51 @@ code_\label :			// assembler code follows
 	you can skip the details.
 */
 
-	# DROP drops the top of stack
+	# DROP drops the top of stack.
 	defcode "DROP",4,,DROP
 	mv gp,sp
 	addi sp,sp,-4
 	NEXT
 
+	# SWAP swaps the top two values on the stack.
 	defcode "SWAP",4,,SWAP
 	lw t0,-4(sp)
 	lw t1,0(sp)
 	sw t0,0(sp)
 	sw t1,-4(sp)
+	NEXT
+
+	# DUP duplicates the top value on the stack and pushes it on the stack.
+	defcode "DUP",3,,DUP
+	lw t1,0(sp)
+	addi sp,sp,-4
+	sw t1,0(sp)
+	NEXT
+
+	# OVER gets the second element of the stack and pushes it on top.
+	defcode "OVER",4,,OVER
+	lw t1,-4(sp)
+	addi sp,sp,-4
+	sw t1,0(sp)
+	NEXT
+
+	# ROT rotates thus ( a b c -- c a b ), where a was at top of stack.
+	# Think positive angle anti-clockwise rotation.
+	defcode "ROT",3,,ROT
+	lw t0,0(sp)
+	lw t1,-4(sp)
+	lw t2,-8(sp)
+	sw t2,0(sp)
+	sw t0,-4(sp)
+	sw t1,-8(sp)
+	NEXT
+
+	# ROT rotates ( a b c -- b c a).
+	defcode "-ROT",4,,NROT
+	lw t0,0(sp)
+	lw t1,-4(sp)
+	lw t2,-8(sp)
+	sw t1,0(sp)
+	sw t2,-4(sp)
+	sw t0,-8(sp)
 	NEXT
