@@ -202,16 +202,15 @@ code_\label :			// assembler code follows
 
 	# DROP drops the top of stack.
 	defcode "DROP",4,,DROP
-	mv gp,sp
-	addi sp,sp,-4
+	addi sp,sp,4
 	NEXT
 
 	# SWAP swaps the top two values on the stack.
 	defcode "SWAP",4,,SWAP
-	lw t0,-4(sp)
+	lw t0,4(sp)
 	lw t1,0(sp)
 	sw t0,0(sp)
-	sw t1,-4(sp)
+	sw t1,4(sp)
 	NEXT
 
 	# DUP duplicates the top value on the stack and pushes it on the stack.
@@ -223,7 +222,7 @@ code_\label :			// assembler code follows
 
 	# OVER gets the second element of the stack and pushes it on top.
 	defcode "OVER",4,,OVER
-	lw t1,-4(sp)
+	lw t1,4(sp)
 	addi sp,sp,-4
 	sw t1,0(sp)
 	NEXT
@@ -232,19 +231,44 @@ code_\label :			// assembler code follows
 	# Think positive angle anti-clockwise rotation.
 	defcode "ROT",3,,ROT
 	lw t0,0(sp)
-	lw t1,-4(sp)
-	lw t2,-8(sp)
+	lw t1,4(sp)
+	lw t2,8(sp)
 	sw t2,0(sp)
-	sw t0,-4(sp)
-	sw t1,-8(sp)
+	sw t0,4(sp)
+	sw t1,8(sp)
 	NEXT
 
-	# ROT rotates ( a b c -- b c a).
+	# -ROT rotates ( a b c -- b c a).
 	defcode "-ROT",4,,NROT
 	lw t0,0(sp)
-	lw t1,-4(sp)
-	lw t2,-8(sp)
+	lw t1,4(sp)
+	lw t2,8(sp)
 	sw t1,0(sp)
-	sw t2,-4(sp)
+	sw t2,4(sp)
+	sw t0,8(sp)
+	NEXT
+
+	# 2DROP drops top two elements of the stack
+	defcode "2DROP",5,,TWODROP
+	addi sp,sp,8
+	NEXT
+
+	# 2DUP duplicates top two elements of the stack
+	defcode "2DUP",4,,TWODUP
+	lw t0,0(sp)
+	lw t1,4(sp)
+	sw t1,-4(sp)
 	sw t0,-8(sp)
+	addi sp,sp,-8
+	NEXT
+
+	# 2SWAP swaps the top two pairs of elements of stack ( a b c d -- c d a b )
+	lw t0,0(sp)
+	lw t1,4(sp)
+	lw a0,8(sp)
+	lw a1,12(sp)
+	sw a0,0(sp)
+	sw a1,4(sp)
+	sw t0,8(sp)
+	sw t1,12(sp)
 	NEXT
