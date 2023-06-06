@@ -295,3 +295,18 @@ code_\label :			// assembler code follows
 	addi t0,t0,-1
 	sw t0,0(sp)
 	NEXT
+
+	# 4+ adds 4 to top of stack ( t0 -- t0+4 ).
+	defcode "4+",2,,INCR4
+	lw t0,0(sp)
+	addi t0,t0,4
+	sw t0,0(sp)
+	NEXT
+
+	# 4- subtracts 4 from top of stack ( t0 -- t0-4 ).
+	defcode "4-",2,,DECR4
+	lw t0,0(sp)
+	addi t0,t0,-4
+	sw t0,0(sp)
+	NEXT
+
