@@ -327,3 +327,32 @@ code_\label :			// assembler code follows
 	sub t0,t1,t0
 	sw t0,0(sp)
 	NEXT
+
+	# * ( a0 a1 -- a1*a0 )
+	defword "*",1,,MUL
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	jal imul
+	sw a0,0(sp)
+	NEXT
+
+imul:
+	mv t0,a0
+	li t2,0 // a0 is positive
+	bge t0,zero,imul_1
+imul_neg:
+	li t2,1 // a0 is negative
+	sub t0,zero,t0 // negate
+imul_1:
+	beqz t0,imul_2 // finish up if multiply by zero
+	add t1,a1,a0 // accumulate into t1
+	addi t0,t0,-1
+	j imul_1
+imul_2:
+	beqz t2,imul_end // a0 is postive
+	sub t1,zero,t1 // negate result
+imul_end:
+	mv a0,t1 // return value is in a0
+	ret
+
