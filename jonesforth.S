@@ -346,7 +346,7 @@ imul_neg:
 	sub t0,zero,t0 // negate
 imul_1:
 	beqz t0,imul_2 // finish up if multiply by zero
-	add t1,a1,a0 // accumulate into t1
+	add t1,a1,a1 // accumulate into t1
 	addi t0,t0,-1
 	j imul_1
 imul_2:
