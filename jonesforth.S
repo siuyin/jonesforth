@@ -280,3 +280,11 @@ code_\label :			// assembler code follows
 	addi sp,sp,-4
 	sw t0,0(sp)
 .qdup_end:
+	NEXT
+
+	# 1+ increments top of stack (t0 -- t0+1)
+	defcode "1+",2,,INCR
+	lw t0,0(sp)
+	addi t0,t0,1
+	sw t0,0(sp)
+	NEXT
