@@ -272,3 +272,11 @@ code_\label :			// assembler code follows
 	sw a1,4(sp)
 	sw a0,0(sp)
 	NEXT
+
+	# ?DUP duplicates top of stack if non-zero ( Z -- Z ), ( NZ -- NZ NZ).
+	defcode "?DUP",4,,QDUP
+	lw t0,0(sp)
+	beqz t0, .qdup_end
+	addi sp,sp,-4
+	sw t0,0(sp)
+.qdup_end:
