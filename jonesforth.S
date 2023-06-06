@@ -209,43 +209,43 @@ code_\label :			// assembler code follows
 	defcode "SWAP",4,,SWAP
 	lw t0,4(sp)
 	lw t1,0(sp)
-	sw t0,0(sp)
 	sw t1,4(sp)
+	sw t0,0(sp)
 	NEXT
 
-	# DUP duplicates the top value on the stack and pushes it on the stack.
+	# DUP duplicatesi (t0 -- t0 t0) the top value on the stack and pushes it on the stack.
 	defcode "DUP",3,,DUP
-	lw t1,0(sp)
+	lw t0,0(sp)
 	addi sp,sp,-4
-	sw t1,0(sp)
+	sw t0,0(sp)
 	NEXT
 
-	# OVER gets the second element of the stack and pushes it on top.
+	# OVER (x t0 -- t0 x t0) gets the second element of the stack and pushes it on top.
 	defcode "OVER",4,,OVER
-	lw t1,4(sp)
+	lw t0,4(sp)
 	addi sp,sp,-4
-	sw t1,0(sp)
+	sw t0,0(sp)
 	NEXT
 
-	# ROT rotates thus ( a b c -- c a b ), where a was at top of stack.
+	# ROT rotates thus ( t0 t1 t2 -- t2 t0 t1 ), where a was at top of stack.
 	# Think positive angle anti-clockwise rotation.
 	defcode "ROT",3,,ROT
-	lw t0,0(sp)
-	lw t1,4(sp)
 	lw t2,8(sp)
-	sw t2,0(sp)
-	sw t0,4(sp)
+	lw t1,4(sp)
+	lw t0,0(sp)
 	sw t1,8(sp)
+	sw t0,4(sp)
+	sw t2,0(sp)
 	NEXT
 
-	# -ROT rotates ( a b c -- b c a).
+	# -ROT rotates ( t0 t1 t2 -- t1 t2 t0).
 	defcode "-ROT",4,,NROT
-	lw t0,0(sp)
-	lw t1,4(sp)
 	lw t2,8(sp)
-	sw t1,0(sp)
-	sw t2,4(sp)
+	lw t1,4(sp)
+	lw t0,0(sp)
 	sw t0,8(sp)
+	sw t2,4(sp)
+	sw t1,0(sp)
 	NEXT
 
 	# 2DROP drops top two elements of the stack
@@ -253,22 +253,22 @@ code_\label :			// assembler code follows
 	addi sp,sp,8
 	NEXT
 
-	# 2DUP duplicates top two elements of the stack
+	# 2DUP duplicates (t0 t1 -- t0 t1 t0 t1) top two elements of the stack
 	defcode "2DUP",4,,TWODUP
-	lw t0,0(sp)
 	lw t1,4(sp)
+	lw t0,0(sp)
 	sw t1,-4(sp)
 	sw t0,-8(sp)
 	addi sp,sp,-8
 	NEXT
 
-	# 2SWAP swaps the top two pairs of elements of stack ( a b c d -- c d a b )
-	lw t0,0(sp)
-	lw t1,4(sp)
-	lw a0,8(sp)
+	# 2SWAP swaps the top two pairs of elements of stack ( t0 t1 a0 a1 -- a0 a1 t0 t1 ).
 	lw a1,12(sp)
-	sw a0,0(sp)
-	sw a1,4(sp)
-	sw t0,8(sp)
+	lw a0,8(sp)
+	lw t1,4(sp)
+	lw t0,0(sp)
 	sw t1,12(sp)
+	sw t0,8(sp)
+	sw a1,4(sp)
+	sw a0,0(sp)
 	NEXT
