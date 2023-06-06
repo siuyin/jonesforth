@@ -319,4 +319,11 @@ code_\label :			// assembler code follows
 	sw t0,0(sp)
 	NEXT
 
-
+	# - gets top of stack and subtracts it from the next word on stack ( t0 t1 -- t1-t0 ).
+	defword "-",1,,SUB
+	lw t1,4(sp)
+	lw t0,0(sp)
+	addi sp,sp,4
+	sub t0,t1,t0
+	sw t0,0(sp)
+	NEXT
