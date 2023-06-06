@@ -311,10 +311,12 @@ code_\label :			// assembler code follows
 	NEXT
 
 	# + gets top of stack and adds it to the next word on stack ( t0 t1 -- t0+t1 ).
+	defword "+",1,,ADD
 	lw t1,4(sp)
 	lw t0,0(sp)
 	addi sp,sp,4
 	add t0,t0,t1
 	sw t0,0(sp)
 	NEXT
+
 
