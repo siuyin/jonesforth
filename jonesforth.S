@@ -288,3 +288,10 @@ code_\label :			// assembler code follows
 	addi t0,t0,1
 	sw t0,0(sp)
 	NEXT
+
+	# 1- decrements top of stack ( t0 -- t0-1 ).
+	defcode "1-",2,,DECR
+	lw t0,0(sp)
+	addi t0,t0,-1
+	sw t0,0(sp)
+	NEXT
