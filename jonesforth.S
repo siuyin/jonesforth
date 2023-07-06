@@ -377,3 +377,40 @@ code_\label :			// assembler code follows
 	sw a1,4(sp)
 	sw a0,0(sp)
 	NEXT
+
+/*
+	Lots of comparison operations like =, <, >, etc..
+
+	ANS FORTH says that the comparison words should return all (binary) 1's for
+	TRUE and all 0's for FALSE.  However this is a bit of a strange convention
+	so this FORTH breaks it and returns the more normal (for C programmers ...)
+	1 meaning TRUE and 0 meaning FALSE.
+*/
+
+	# = ( a a -- 1 ) , ( a b  -- 0 )
+	defcode "=",1,,EQU
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	beq a0,a1, 1f
+	li a0,0
+	j 2f
+1:
+	li a0,1
+2:	
+	sw a0,0(sp)
+	NEXT
+
+	# <> ( a a -- 0 ), ( a b -- 1 )
+	defcode "<>",2,,NEQU
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	bne a0,a1,1f
+	li a0,0
+	j 2f
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
