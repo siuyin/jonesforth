@@ -347,3 +347,33 @@ code_\label :			// assembler code follows
 	sw a0,0(sp)
 	NEXT
 
+	# /MOD unsigned divide and mod ( a0 a1 -- a0/a1 a0%a1 )
+	defword "/MOD",4,,DIVMOD
+	lw a1,4(sp)
+	lw a0,0(sp)
+
+	add a2,zero,a1
+	add a1,zero,a0
+	addi a0,zero,-1
+	beq a2,zero,.LD5
+	addi a3,zero,1
+	bgeu a2,a1,.LD2
+.LD1:
+	bge zero,a2,.LD2
+	slli a2,a2,1
+	slli a3,a3,1
+	bltu a2,a1,.LD1
+.LD2:
+	addi a0,zero,0
+.LD3:
+	bltu a1,a2,.LD4
+	sub a1,a1,a2
+	or a0,a0,a3
+.LD4:
+	srli a3,a3,1
+	srli a2,a2,1
+	bne a3,zero,.LD3
+.LD5:
+	sw a1,4(sp)
+	sw a0,0(sp)
+	NEXT
