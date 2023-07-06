@@ -355,25 +355,25 @@ code_\label :			// assembler code follows
 	add a2,zero,a1
 	add a1,zero,a0
 	addi a0,zero,-1
-	beq a2,zero,.LD5
+	beq a2,zero,5f
 	addi a3,zero,1
-	bgeu a2,a1,.LD2
-.LD1:
-	bge zero,a2,.LD2
+	bgeu a2,a1,2f
+1:
+	bge zero,a2,2f
 	slli a2,a2,1
 	slli a3,a3,1
-	bltu a2,a1,.LD1
-.LD2:
+	bltu a2,a1,1b
+2:
 	addi a0,zero,0
-.LD3:
-	bltu a1,a2,.LD4
+3:
+	bltu a1,a2,4f
 	sub a1,a1,a2
 	or a0,a0,a3
-.LD4:
+4:
 	srli a3,a3,1
 	srli a2,a2,1
-	bne a3,zero,.LD3
-.LD5:
+	bne a3,zero,3b
+5:
 	sw a1,4(sp)
 	sw a0,0(sp)
 	NEXT
