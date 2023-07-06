@@ -332,28 +332,18 @@ code_\label :			// assembler code follows
 	defword "*",1,,MUL
 	lw a1,4(sp)
 	lw a0,0(sp)
+	add a2,zero,a0
+	addi a0,zero,0
+.L1:
+	andi a3,a1,1
+	beq a3,zero, .L2
+	add a0,a0,a2
+.L2:
+	srli a1,a1,1
+	slli a2,a2,1
+	bne a1,zero, .L1
+
 	addi sp,sp,4
-	jal imul
 	sw a0,0(sp)
 	NEXT
-
-imul:
-	mv t0,a0
-	addi t1,zero,0 // init result to zero
-	li t2,0 // a0 is positive
-	bge t0,zero,imul_1
-imul_neg:
-	li t2,1 // a0 is negative
-	sub t0,zero,t0 // negate
-imul_1:
-	beqz t0,imul_2 // finish up if multiply by zero
-	add t1,t1,a1 // accumulate into t1
-	addi t0,t0,-1
-	j imul_1
-imul_2:
-	beqz t2,imul_end // a0 is postive
-	sub t1,zero,t1 // negate result
-imul_end:
-	mv a0,t1 // return value is in a0
-	ret
 
