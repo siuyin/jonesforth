@@ -558,3 +558,30 @@ code_\label :			// assembler code follows
 	not a0,a0
 	sw a0,0(sp)
 	NEXT
+
+/*
+	RETURNING FROM FORTH WORDS ----------------------------------------------------------------------
+
+	Time to talk about what happens when we EXIT a function.  In this diagram QUADRUPLE has called
+	DOUBLE, and DOUBLE is about to exit (look at where %esi is pointing):
+
+		QUADRUPLE
+		+------------------+
+		| codeword         |
+		+------------------+		   DOUBLE
+		| addr of DOUBLE  ---------------> +------------------+
+		+------------------+               | codeword         |
+		| addr of DOUBLE   |		   +------------------+
+		+------------------+	   	   | addr of DUP      |
+		| addr of EXIT	   |		   +------------------+
+		+------------------+	   	   | addr of +        |
+						   +------------------+
+					   %esi -> | addr of EXIT     |
+						   +------------------+
+
+	What happens when the + function does NEXT?  Well, the following code is executed.
+*/
+
+	defcode "EXIT",4,,EXIT
+	POPRSP tp  // %esi in jonesforth x86 is tp in my RISC-V implementation
+	NEXT
