@@ -551,3 +551,10 @@ code_\label :			// assembler code follows
 	xor a0,a0,a1
 	sw a0,0(sp)
 	NEXT
+
+	# INVERT ( a0 -- ~a0 )
+	defcode "INVERT",6,,INVERT
+	lw a0,0(sp)
+	not a0,a0
+	sw a0,0(sp)
+	NEXT
