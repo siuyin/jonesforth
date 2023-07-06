@@ -428,3 +428,17 @@ code_\label :			// assembler code follows
 2:
 	sw a0,0(sp)
 	NEXT
+
+	# > (3 2 -- 1 ), ( 2 2 -- 0 )
+	defcode ">",1,,GT
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	bgt a0,a1,1f
+	li a0,0
+	j 2f
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
