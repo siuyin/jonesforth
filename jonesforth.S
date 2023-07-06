@@ -334,14 +334,14 @@ code_\label :			// assembler code follows
 	lw a0,0(sp)
 	add a2,zero,a0
 	addi a0,zero,0
-.L1:
+1:
 	andi a3,a1,1
-	beq a3,zero, .L2
+	beq a3,zero, 2f
 	add a0,a0,a2
-.L2:
+2:
 	srli a1,a1,1
 	slli a2,a2,1
-	bne a1,zero, .L1
+	bne a1,zero, 1b
 
 	addi sp,sp,4
 	sw a0,0(sp)
