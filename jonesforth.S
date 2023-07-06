@@ -491,3 +491,14 @@ code_\label :			// assembler code follows
 2:
 	sw a0,0(sp)
 	NEXT
+
+	# 0> ( pos -- 1 ), ( z -- 0 )
+	defcode "0>",2,,ZGT
+	lw a0,0(sp)
+	bgt a0,zero,1f
+	li a0,0
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
