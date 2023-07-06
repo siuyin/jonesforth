@@ -533,3 +533,13 @@ code_\label :			// assembler code follows
 	and a0,a0,a1
 	sw a0,0(sp)
 	NEXT
+
+	# OR ( a0 a1 -- a0 | a1 )
+	defcode "OR",2,,OR
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	or a0,a0,a1
+	sw a0,0(sp)
+	NEXT
+
