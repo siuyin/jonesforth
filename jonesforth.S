@@ -480,3 +480,14 @@ code_\label :			// assembler code follows
 2:
 	sw a0,0(sp)
 	NEXT
+
+	# 0< ( neg -- 1 ), ( z -- 0 )
+	defcode "0<",2,,ZLT
+	lw a0,0(sp)
+	blt a0,zero,1f
+	li a0,0
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
