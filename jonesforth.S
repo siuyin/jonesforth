@@ -515,12 +515,21 @@ code_\label :			// assembler code follows
 	NEXT
 
 	# 0>= ( pos|z -- 1 ), ( neg -- 0 )
-	defcode "0>=",3,,zGE
+	defcode "0>=",3,,ZGE
 	lw a0,0(sp)
 	bge a0,zero,1f
 	li a0,0
 1:
 	li a0,1
 2:
+	sw a0,0(sp)
+	NEXT
+
+	# AND ( a0 a1 -- a0 & a1 )
+	defcode "AND",3,,AND
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	and a0,a0,a1
 	sw a0,0(sp)
 	NEXT
