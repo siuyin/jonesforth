@@ -456,3 +456,15 @@ code_\label :			// assembler code follows
 2:
 	sw a0,0(sp)
 	NEXT
+
+	# 0= ( z -- 1 ), ( nz -- 0 )
+	defcode "0=",2,,ZEQU
+	lw a0,0(sp)
+	beqz a0,1f
+	li a0,0
+	j 2f
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
