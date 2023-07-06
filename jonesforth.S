@@ -513,3 +513,14 @@ code_\label :			// assembler code follows
 2:
 	sw a0,0(sp)
 	NEXT
+
+	# 0>= ( pos|z -- 1 ), ( neg -- 0 )
+	defcode "0>=",3,,zGE
+	lw a0,0(sp)
+	bge a0,zero,1f
+	li a0,0
+1:
+	li a0,1
+2:
+	sw a0,0(sp)
+	NEXT
