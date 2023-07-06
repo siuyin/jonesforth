@@ -543,3 +543,11 @@ code_\label :			// assembler code follows
 	sw a0,0(sp)
 	NEXT
 
+	# XOR ( a0 a1 -- a0 ^ a1 )
+	defcode "XOR",3,,XOR
+	lw a1,4(sp)
+	lw a0,0(sp)
+	addi sp,sp,4
+	xor a0,a0,a1
+	sw a0,0(sp)
+	NEXT
