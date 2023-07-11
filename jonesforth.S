@@ -79,7 +79,7 @@ _start:
 
 	.section .rodata
 cold_start:
-	# FIXME
+	# FIXME: QUIT is defined later. Uncomment this when it is defined.
 	#.int QUIT
 
 /*
