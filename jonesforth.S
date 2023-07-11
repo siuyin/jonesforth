@@ -68,10 +68,14 @@ DOCOL:
 	.text
 	.globl _start
 _start:
+	# TODO store stack pointer to FORTH variable S0
+	#la t0,var_S0
+	#sw sp,0(t0)
 	la fp,return_stack_top
 	# FIXME
 	# j set_up_data_segment
 	la tp,cold_start
+	NEXT
 
 	.section .rodata
 cold_start:
