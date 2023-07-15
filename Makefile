@@ -10,7 +10,7 @@ CFLAGS+= \
 	-static-libgcc \
 	-march=rv32ec \
 	-mabi=ilp32e \
-	-nostdlib \
+	-nostdlib -L \
 	-I. -Wall $(EXTRA_CFLAGS)
 
 LINKER_SCRIPT?=simple.ld

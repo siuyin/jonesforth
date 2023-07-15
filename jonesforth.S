@@ -139,11 +139,8 @@ DOUBLE: .int DOCOL		// codeword
 	.section .rodata
 	.align 4
 	.globl name_\label
-#name_\label :
-#	.int link		// link
-#	.set link,name_\label
 name_\label :
-	.int 1b
+	.int 1b // define an int pointed to label 1 'backwards'
 1:
 	.byte \flags+\namelen	// flags + length byte
 	.ascii "\name"		// the name

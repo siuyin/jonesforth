@@ -4,6 +4,9 @@ to target the RISC-V ch32v003.
 
 Jonesforth initially targetted i386.
 
+There is a port of jonesforth to risc-v, rv32:
+https://github.com/hansfbaier/jonesforth_riscv32/blob/master/jonesforth.S
+
 ## Building
 On WSL or Debian based OSes apt-get install build-essential libnewlib-dev gcc-riscv64-unknown-elf libusb-1.0-0-dev libudev-dev
 
